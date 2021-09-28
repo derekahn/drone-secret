@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/base64"
 	"io/ioutil"
+	"strings"
 )
 
 // getFiles recursively reads all files in a
@@ -30,7 +31,7 @@ func getFiles(dir string) ([]string, error) {
 func isAllowed(denyList []string) func(string) bool {
 	return func(file string) bool {
 		for _, deny := range denyList {
-			if file == deny {
+			if strings.Contains(file, deny) {
 				return false
 			}
 		}

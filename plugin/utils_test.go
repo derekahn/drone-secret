@@ -6,8 +6,10 @@ import (
 )
 
 const (
-	awsFile = "../test/secret.yaml"
-	errFile = "../test/admin.yaml"
+	testPath = "../test/"
+
+	awsFile = "secret.yaml"
+	errFile = "admin.yaml"
 
 	awsVal = "AKIAS4ZG5BB8LHHG23O1"
 	awsKey = "${AWS_ACCESS_KEY_ID}"
@@ -37,6 +39,8 @@ data:
 )
 
 func TestGetFiles(t *testing.T) {
+	t.Parallel()
+
 	tests := []struct {
 		name   string
 		input  string
@@ -65,6 +69,8 @@ func TestGetFiles(t *testing.T) {
 }
 
 func TestFilter(t *testing.T) {
+	t.Parallel()
+
 	denyList := []string{"bar", "baz"}
 
 	tests := []struct {
@@ -98,8 +104,8 @@ func TestFindAndReplace(t *testing.T) {
 		replace string
 		hasErr  bool
 	}{
-		{"error", errFile, "${NOTHING}", "something", true},
-		{"success", awsFile, awsKey, awsVal, false},
+		{"error ioutil.WriteFile", testPath + errFile, "NOTHING", "something", true},
+		{"success", testPath + awsFile, awsKey, awsVal, false},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -123,5 +129,5 @@ func TestFindAndReplace(t *testing.T) {
 
 // cleanup reverts the test file back
 func cleanup() error {
-	return ioutil.WriteFile(awsFile, []byte(original), 0644)
+	return ioutil.WriteFile(testPath+awsFile, []byte(original), 0644)
 }
