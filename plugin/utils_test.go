@@ -31,3 +31,29 @@ func TestGetFiles(t *testing.T) {
 		})
 	}
 }
+
+func TestFilter(t *testing.T) {
+	denyList := []string{"bar", "baz"}
+
+	tests := []struct {
+		name   string
+		input  []string
+		expect int
+	}{
+		{"filters unwanted: bar", []string{"alpha", "bar", "bravo"}, 2},
+		{"filters unwanted: bar, baz", []string{"foo", "bar", "baz"}, 1},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+
+			list := filter(tt.input, isAllowed(denyList))
+			got := len(list)
+
+			if tt.expect != got {
+				t.Errorf("expected '%d', instead got '%d'", tt.expect, got)
+				t.Fail()
+			}
+		})
+	}
+}
