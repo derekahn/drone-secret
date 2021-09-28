@@ -1,5 +1,12 @@
 # 🤫 Drone Secret
 
+[![made-with-Go](https://img.shields.io/badge/Made%20with-Go-1f425f.svg)](http://golang.org)
+[![Go Report Card](https://goreportcard.com/badge/github.com/derekahn/drone-secret)](https://goreportcard.com/report/github.com/derekahn/drone-secret)
+[![GitHub go.mod Go version of a Go module](https://img.shields.io/github/go-mod/go-version/gomods/athens.svg)](https://github.com/derekahn/drone-secret)
+[![GoDoc](https://img.shields.io/badge/godoc-reference-blue.svg)](https://pkg.go.dev/github.com/derekahn/drone-secret)
+[![MIT license](https://img.shields.io/badge/License-MIT-blue.svg)](https://lbesson.mit-license.org/)
+[![Sourcegraph](https://sourcegraph.com/github.com/gorilla/mux/-/badge.svg)](https://sourcegraph.com/github.com/derekahn/drone-secret?badge)
+
 A plugin to "to interpolate base64 secrets".
 
 ## Usage
