@@ -1,0 +1,33 @@
+FROM golang:1.17.1-alpine3.14 as builder
+
+ENV CGO_ENABLED=0
+ENV GOARCH=arm
+ENV GOOS=linux
+
+# Set the working directory outside $GOPATH to enable the support for modules.
+WORKDIR /src
+
+# Cache modules retrieval - these don't change often
+COPY go.mod go.sum ./
+RUN go mod download
+
+COPY . .
+
+RUN apk add -U --no-cache ca-certificates \
+  && go build -ldflags="-w -s" -o /bin/plugin \
+  && mkdir /user \
+  && echo 'nobody:x:65534:65534:nobody:/:' > /user/passwd \
+  && echo 'nobody:x:65534:' > /user/group
+
+FROM scratch AS final
+
+ENV GODEBUG netdns=go
+
+COPY --from=builder /user/group /user/passwd /etc/
+COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
+
+COPY --chown=nobody --from=builder /bin/plugin /bin/plugin
+
+USER nobody:nobody
+
+ENTRYPOINT ["/bin/plugin"]
