@@ -1,7 +1,39 @@
 package plugin
 
 import (
+	"io/ioutil"
 	"testing"
+)
+
+const (
+	awsFile = "../test/secret.yaml"
+	errFile = "../test/admin.yaml"
+
+	awsVal = "AKIAS4ZG5BB8LHHG23O1"
+	awsKey = "${AWS_ACCESS_KEY_ID}"
+
+	original = `---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: test-secret
+type: Opaque
+data:
+  AWS_REGION: us-east-1
+  AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+  AWS_SECRET_NAME: test/secret
+`
+	snapshot = `---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: test-secret
+type: Opaque
+data:
+  AWS_REGION: us-east-1
+  AWS_ACCESS_KEY_ID: QUtJQVM0Wkc1QkI4TEhIRzIzTzE=
+  AWS_SECRET_NAME: test/secret
+`
 )
 
 func TestGetFiles(t *testing.T) {
@@ -56,4 +88,40 @@ func TestFilter(t *testing.T) {
 			}
 		})
 	}
+}
+
+func TestFindAndReplace(t *testing.T) {
+	tests := []struct {
+		name    string
+		file    string
+		find    string
+		replace string
+		hasErr  bool
+	}{
+		{"error", errFile, "${NOTHING}", "something", true},
+		{"success", awsFile, awsKey, awsVal, false},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			err := findAndReplace([]string{tt.file}, tt.find, tt.replace)
+			if tt.hasErr && err == nil {
+				t.Error("expected an error")
+				t.Fail()
+			}
+
+			if !tt.hasErr {
+				defer cleanup()
+				file, _ := ioutil.ReadFile(tt.file)
+				if string(file) != snapshot {
+					t.Error("expected to interpolate " + awsFile)
+					t.Fail()
+				}
+			}
+		})
+	}
+}
+
+// cleanup reverts the test file back
+func cleanup() error {
+	return ioutil.WriteFile(awsFile, []byte(original), 0644)
 }
