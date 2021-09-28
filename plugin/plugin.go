@@ -12,8 +12,8 @@ type Args struct {
 	// Directory is the optinal target; defaults to .
 	Directory string `envconfig:"PLUGIN_DIRECTORY"`
 
-	// FileDenyList is an optional list of files to ignore
-	FileDenyList []string `envconfig:"PLUGIN_FILE_DENY_LIST"`
+	// DenyList is an optional list of files to ignore
+	DenyList []string `envconfig:"PLUGIN_DENY_LIST"`
 }
 
 // Exec executes the plugin
@@ -23,8 +23,8 @@ func Exec(ctx context.Context, args Args) error {
 		return err
 	}
 
-	if len(args.FileDenyList) > 0 {
-		files = filter(files, isAllowed(args.FileDenyList))
+	if len(args.DenyList) > 0 {
+		files = filter(files, isAllowed(args.DenyList))
 	}
 
 	for find, replace := range args.Secrets {

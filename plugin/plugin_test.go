@@ -16,18 +16,18 @@ func TestPlugin(t *testing.T) {
 		{
 			name: "successful execution",
 			input: Args{
-				Directory:    "../test",
-				FileDenyList: []string{errFile},
-				Secrets:      secret,
+				Directory: "../test",
+				DenyList:  []string{errFile},
+				Secrets:   secret,
 			},
 			hasErr: false,
 		},
 		{
 			name: "errors on file with elevated permissions",
 			input: Args{
-				Directory:    "../test",
-				FileDenyList: []string{awsFile},
-				Secrets:      secret,
+				Directory: "../test",
+				DenyList:  []string{awsFile},
+				Secrets:   secret,
 			},
 			hasErr: true,
 		},

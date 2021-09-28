@@ -15,7 +15,7 @@ The following settings changes this plugin's behavior.
 
 - Secrets (required) takes a stringified map (refer to [envconfig](https://github.com/kelseyhightower/envconfig)) and base64 encodes the values while it finds and replaces.
 - Directory (optional) is the targeted directory to recursively interpolate
-- FileDenyList (optional) takes a list of files to ignore
+- DenyList (optional) takes a list of files to ignore
 
 Below is an example `.drone.yml` that uses this plugin.
 
@@ -30,7 +30,7 @@ steps:
     settings:
       secrets: "${FOO}:alpha,${BAR}:bravo,${BAZ}:charlie"
       directory: "deployments"
-      fileDenyList: "deployment.yaml"
+      denyList: "deployment.yaml"
 ```
 
 Below is an **input** example of a file in `deployments/` **before** plugin execution:
