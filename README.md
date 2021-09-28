@@ -79,9 +79,9 @@ scripts/build.sh
 Execute the plugin from your current working directory:
 
 ```bash
-$ docker build -t "derekahn/drone-secret" -f docker/Dockerfile .
+docker build -t "derekahn/drone-secret" -f docker/Dockerfile .
 
-$ docker run --rm \
+docker run --rm \
   -e DRONE_COMMIT_SHA=8f51ad7884c5eb69c11d260a31da7a745e6b78e2 \
   -e DRONE_COMMIT_BRANCH=master \
   -e DRONE_BUILD_NUMBER=43 \
