@@ -16,7 +16,7 @@ func TestPlugin(t *testing.T) {
 		{
 			name: "successful execution",
 			input: Args{
-				Directory: "../test",
+				Directory: testPath,
 				DenyList:  []string{errFile},
 				Secrets:   secret,
 			},
@@ -25,7 +25,7 @@ func TestPlugin(t *testing.T) {
 		{
 			name: "errors on file with elevated permissions",
 			input: Args{
-				Directory: "../test",
+				Directory: testPath,
 				DenyList:  []string{awsFile},
 				Secrets:   secret,
 			},
@@ -49,6 +49,10 @@ func TestPlugin(t *testing.T) {
 				t.Fail()
 			}
 			if !tt.hasErr {
+				if err != nil {
+					t.Error("not expecting an error")
+					t.Fail()
+				}
 				cleanup()
 			}
 		})
