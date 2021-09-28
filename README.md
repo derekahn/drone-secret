@@ -19,8 +19,6 @@ The following settings changes this plugin's behavior.
 
 Below is an example `.drone.yml` that uses this plugin.
 
-> If using shell (ie. ${KEY}) interpolation convention be sure to use single quotes '' around the value (ie. '${FOO}:alpha,${BAR}:bravo,${BAZ}:charlie')`
-
 ```yaml
 kind: pipeline
 name: default
@@ -35,7 +33,38 @@ steps:
       fileDenyList: "deployment.yaml"
 ```
 
-Instantiated the project with [boilr-plugin](https://github.com/drone/boilr-plugin) 👏🏽
+Below is an **input** example of a file in `deployments/` **before** plugin execution:
+
+```yaml
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: test-secret
+type: Opaque
+data:
+  FOO: ${FOO}
+  BAR: ${BAR}
+  BAZ: ${BAZ}
+```
+
+Below is an **output** example of a file in `deployments/` **after** plugin execution:
+
+```yaml
+# deployments/secret.yaml
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: test-secret
+type: Opaque
+data:
+  FOO: YWxwaGE=     # alpha
+  BAR: YnJhdm8=     # bravo
+  BAZ: Y2hhcmxpZQ== # charlie
+```
+
+> Instantiated the project with [boilr-plugin](https://github.com/drone/boilr-plugin) 👏🏽
 
 ## 🚀 Building
 
