@@ -96,6 +96,26 @@ docker run --rm \
 
 After execution be sure to revert the file `test/ignore/dev_test.yaml` !
 
+## 🔒 Security
+
+This plugin is **highly** secure with just a single dependency ([envconfig](https://github.com/kelseyhightower/envconfig/blob/master/LICENSE)) and a hardened and locked down 🐳 container.
+
+Utilizing [trivy](https://github.com/aquasecurity/trivy) for container vulnerability scans.
+
+```bash
+$ trivy image derekahn/drone-secret:v1
+
+2021-09-29T17:08:59.613-0700    INFO    Need to update DB
+2021-09-29T17:08:59.613-0700    INFO    Downloading DB...
+24.18 MiB / 24.18 MiB [----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------] 100.00% 4.90 MiB p/s 5s
+2021-09-29T17:09:05.657-0700    INFO    Number of language-specific files: 1
+2021-09-29T17:09:05.657-0700    INFO    Detecting gobinary vulnerabilities...
+
+bin/plugin (gobinary)
+=====================
+Total: 0 (UNKNOWN: 0, LOW: 0, MEDIUM: 0, HIGH: 0, CRITICAL: 0)
+```
+
 ## 📦 Licenses
 
 - [x] [MIT](https://github.com/kelseyhightower/envconfig/blob/master/LICENSE) github.com/kelseyhightower/envconfig
