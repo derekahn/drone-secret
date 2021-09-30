@@ -100,7 +100,9 @@ After execution be sure to revert the file `test/ignore/dev_test.yaml` !
 
 This plugin is **highly** secure with just a single dependency ([envconfig](https://github.com/kelseyhightower/envconfig/blob/master/LICENSE)) and a hardened and locked down 🐳 container.
 
-Utilizing [trivy](https://github.com/aquasecurity/trivy) for container vulnerability scans.
+Utilizing [trivy](https://github.com/aquasecurity/trivy) for vulnerability scans.
+
+#### Container (🐳 image) scan for misconfiguration and vulnerabilities:
 
 ```bash
 $ trivy image derekahn/drone-secret:v1
@@ -114,6 +116,26 @@ $ trivy image derekahn/drone-secret:v1
 bin/plugin (gobinary)
 =====================
 Total: 0 (UNKNOWN: 0, LOW: 0, MEDIUM: 0, HIGH: 0, CRITICAL: 0)
+```
+
+#### Project scan for misconfiguration and vulnerabilities:
+
+```bash
+$ trivy fs --security-checks vuln,config .
+
+2021-09-30T09:20:23.213-0700    INFO    Number of language-specific files: 1
+2021-09-30T09:20:23.213-0700    INFO    Detecting gomod vulnerabilities...
+2021-09-30T09:20:23.213-0700    INFO    Detected config files: 1
+
+go.sum (gomod)
+==============
+Total: 0 (UNKNOWN: 0, LOW: 0, MEDIUM: 0, HIGH: 0, CRITICAL: 0)
+
+
+docker/Dockerfile (dockerfile)
+==============================
+Tests: 23 (SUCCESSES: 23, FAILURES: 0, EXCEPTIONS: 0)
+Failures: 0 (UNKNOWN: 0, LOW: 0, MEDIUM: 0, HIGH: 0, CRITICAL: 0)
 ```
 
 ## 📦 Licenses
